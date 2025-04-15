@@ -1,10 +1,17 @@
-<% @classes_for_body = "bg-gradient-to-b from-indigo-500 to-pink-500" %>
+<% @classes_for_body = "bg-white" %>
 
-<div class="w-full flex flex-col items-center min-h-screen">
-  <h1 class="font-bold text-7xl font-header text-yellow-500">Daisy Social</h1>
-  <p class="text-2xl text-purple-100 mt-4">A social media app built with Ruby on Rails & DaisyUI</p>
-  <div class="mt-4 flex items-center gap-4"> 
-    <%= link_to "Sign In", new_session_path, class: "btn btn-primary" %>
-    <%= link_to "Create Account", new_session_path, class: "btn btn-secondary" %>
+<div class="w-full h-screen flex flex-col items-center justify-start bg-white">
+  <!-- Logo Section -->
+  <div class="mt-10"> <!-- Adjusted margin-top to move the logo up -->
+    <%= image_tag('mySocial_logo.png', alt: 'mySocial Logo', size: '400x400') %>
+  </div>
+
+  <!-- Description -->
+  <p class="text-2xl text-gray-700 mt-4 text-center">a social app for throwing parties with your friends</p>
+
+  <!-- Buttons -->
+  <div class="mt-8 flex items-center gap-6 justify-center"> 
+    <%= link_to "Sign In", new_session_path, class: "btn btn-primary text-white bg-orange-500 rounded-lg px-6 py-2 shadow-lg" %>
+    <%= link_to "Create Account", new_session_path, class: "btn btn-secondary text-white bg-orange-300 rounded-lg px-6 py-2 shadow-lg" %>
   </div>
 </div>
