@@ -1,14 +1,42 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="text-4xl text-gray-900 font-bold"> Create Account </h1>
-  <%= form_with url: registrations_path, model: @user do |f| %>
-    <%= f.email_field :email_address, class: "block w-full shadow-sm border border-gray-900 text-gray-900 px-3 py-2 rounded-lg my-5",
-      placeholder: "Enter your email" %>
-    <%= f.password_field :password, class: "block w-full shadow-sm border border-gray-900 text-gray-900 px-3 py-2 rounded-lg my-5",
-      placeholder: "Enter a password" %>
+<% @classes_for_body = "bg-white" %>
 
-    <div class="flex items-center gap-4">
-      <%= f.submit "Sign up", class: "px-3 py-2 rounded-lg bg-blue-500 text-blue-50 cursor-pointer hover:bg-blue-600 transition duration-250" %>
-      <%= link_to "Log in", new_session_path, class: "px-3 py-2 rounded-lg border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-gray-50 transition duration-250" %>
-    </div>
-  <% end %>
+<div class="w-full h-screen flex flex-col items-center justify-start bg-white">
+  <!-- Logo Section -->
+  <div class="mt-10">
+    <%= image_tag('mySocial_logo.png', alt: 'mySocial Logo', size: '400x400') %>
+  </div>
+
+  <!-- Create Account Form -->
+  <div class="w-full max-w-md mt-8 px-4">
+    <h1 class="text-3xl text-gray-700 text-center mb-8 font-light tracking-wide">CREATE ACCOUNT</h1>
+
+    <%= form_with model: @user, url: registrations_path, class: "space-y-6" do |form| %>
+      <div>
+        <%= form.email_field :email_address, 
+            required: true, 
+            autofocus: true, 
+            autocomplete: "username", 
+            placeholder: "Enter your email address", 
+            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-orange-500 placeholder-gray-600 text-gray-800" %>
+      </div>
+
+      <div>
+        <%= form.password_field :password, 
+            required: true, 
+            autocomplete: "new-password", 
+            placeholder: "Create a password", 
+            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-orange-500 placeholder-gray-600 text-gray-800" %>
+      </div>
+
+      <div class="flex flex-col items-center space-y-4">
+        <%= form.submit "Create Account", 
+            class: "w-full text-white bg-orange-500 hover:bg-orange-600 rounded-lg px-6 py-3 shadow-lg transition duration-300" %>
+        
+        <div class="text-center">
+          <%= link_to "Back to Sign In", new_session_path, 
+              class: "text-orange-500 hover:text-orange-600 transition duration-300" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

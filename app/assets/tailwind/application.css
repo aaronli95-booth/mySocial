@@ -30,5 +30,5 @@ p, a {
 }
 
 h1, h2, h3 {
-  @apply font-header-2;
+  @apply font-text;
 }

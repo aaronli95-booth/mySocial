@@ -1,17 +1,35 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<% @classes_for_body = "bg-white" %>
 
-  <h1 class="font-bold text-4xl">Forgot your password?</h1>
+<div class="w-full h-screen flex flex-col items-center justify-start bg-white">
+  <!-- Logo Section -->
+  <div class="mt-10">
+    <%= image_tag('mySocial_logo.png', alt: 'mySocial Logo', size: '400x400') %>
+  </div>
 
-  <%= form_with url: passwords_path, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-solid focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
+  <!-- Forgot Password Form -->
+  <div class="w-full max-w-md mt-8 px-4">
+    <h1 class="text-3xl text-gray-700 text-center mb-8 font-light tracking-wide">FORGOT PASSWORD</h1>
 
-    <div class="inline">
-      <%= form.submit "Email reset instructions", class: "w-full sm:w-auto text-center rounded-lg px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-    </div>
-  <% end %>
+    <%= form_with url: passwords_path, class: "space-y-6" do |form| %>
+      <div>
+        <%= form.email_field :email_address, 
+            required: true, 
+            autofocus: true, 
+            autocomplete: "username", 
+            placeholder: "Enter your email address", 
+            value: params[:email_address], 
+            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-orange-500 placeholder-gray-600 text-gray-800" %>
+      </div>
+
+      <div class="flex flex-col items-center space-y-4">
+        <%= form.submit "Reset Password", 
+            class: "w-full text-white bg-orange-500 hover:bg-orange-600 rounded-lg px-6 py-3 shadow-lg transition duration-300" %>
+        
+        <div class="text-center">
+          <%= link_to "Back to Sign In", new_session_path, 
+              class: "text-orange-500 hover:text-orange-600 transition duration-300" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
