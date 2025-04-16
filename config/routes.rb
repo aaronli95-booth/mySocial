@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :profile, only: [:edit, :update]
+  resource :profile, only: [:show, :edit, :update]
   resources :posts
   resource :registrations, only: [:new, :create]
   resource :session

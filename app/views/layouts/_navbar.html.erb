@@ -46,8 +46,34 @@
 
   <div class="navbar-end">
     <% if authenticated? %>
-      <%= link_to "Edit Profile", edit_profile_path, class: "btn bg-orange-500 text-white opacity-80 hover:opacity-100 mr-4" %>
-      <a href="<%= new_post_path %>" class="btn bg-orange-500 text-white opacity-80 hover:opacity-100">Create Post</a>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            <% if Current.user.avatar.attached? %>
+              <%= image_tag Current.user.avatar, class: "w-full h-full object-cover rounded-full" %>
+            <% else %>
+              <div class="w-full h-full bg-orange-200 flex items-center justify-center rounded-full">
+                <span class="text-orange-500 text-lg">
+                  <%= Current.user.first_name&.first&.upcase %><%= Current.user.last_name&.first&.upcase %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow-lg menu menu-sm dropdown-content bg-white rounded-lg w-52">
+          <%= link_to profile_path, class: "block" do %>
+            <div class="px-4 py-2 text-gray-700 hover:bg-orange-50 rounded-lg transition duration-200">
+              View Profile
+            </div>
+          <% end %>
+          <%= link_to edit_profile_path, class: "block" do %>
+            <div class="px-4 py-2 text-gray-700 hover:bg-orange-50 rounded-lg transition duration-200">
+              Edit Profile
+            </div>
+          <% end %>
+        </ul>
+      </div>
+      <a href="<%= new_post_path %>" class="btn bg-orange-500 text-white opacity-80 hover:opacity-100 ml-4">Create Post</a>
     <% end %>
   </div>
 </div>

@@ -2,7 +2,9 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_many :posts, dependent: :destroy
-  has_one_attached :avatar
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_fill: [100, 100]
+  end
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   
@@ -12,18 +14,18 @@ class User < ApplicationRecord
   validates :school, presence: true
   validates :bio, length: { maximum: 500 }, allow_blank: true
 
-  validate :acceptable_avatar
+  validate :validate_avatar
 
   private
 
-  def acceptable_avatar
+  def validate_avatar
     return unless avatar.attached?
 
-    unless avatar.content_type.in?(%w[image/jpeg image/png image/jpg])
-      errors.add(:avatar, "must be a JPEG, PNG, or JPG")
+    unless avatar.blob.content_type.in?(%w[image/png image/jpeg image/jpg])
+      errors.add(:avatar, "must be a PNG, JPG, or JPEG")
     end
 
-    unless avatar.byte_size <= 5.megabytes
+    unless avatar.blob.byte_size <= 5.megabytes
       errors.add(:avatar, "must be less than 5MB")
     end
   end

@@ -1,0 +1,90 @@
+<% @classes_for_body = "bg-white" %>
+
+<div class="w-full min-h-screen bg-white">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Profile Header -->
+    <div class="flex items-center space-x-8 mb-8">
+      <div class="w-32 h-32">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, class: "w-full h-full object-cover rounded-full" %>
+        <% else %>
+          <div class="w-full h-full bg-orange-200 flex items-center justify-center rounded-full">
+            <span class="text-orange-500 text-4xl">
+              <%= @user.first_name&.first&.upcase %><%= @user.last_name&.first&.upcase %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="flex-1">
+        <h1 class="text-3xl font-semibold text-gray-800">
+          <%= @user.first_name %> <%= @user.last_name %>
+        </h1>
+        <p class="text-gray-600 mt-1"><%= @user.school %></p>
+        
+        <% if @user.bio.present? %>
+          <p class="text-gray-700 mt-4"><%= @user.bio %></p>
+        <% end %>
+
+        <%= link_to "Edit Profile", edit_profile_path, 
+            class: "inline-block mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition duration-300" %>
+      </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="mt-12 w-[400px]">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Posts</h2>
+        <%= link_to "Create New Post", new_post_path, 
+            class: "bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md" %>
+      </div>
+
+      <% if @user.posts.any? %>
+        <div class="space-y-6">
+          <% @user.posts.order(created_at: :desc).each do |post| %>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              <% if post.images.any? %>
+                <div class="relative" id="carousel-<%= post.id %>">
+                  <div class="carousel-images flex flex-shrink justify-center">
+                    <% post.images.each_with_index do |image, index| %>
+                      <%= image_tag image, class: "carousel-img w-[500px] object-contain", 
+                          data: { index: index }, 
+                          style: (index == 0 ? "" : "display:none;") %>
+                    <% end %>
+                  </div>
+                  <% if post.images.size > 1 %>
+                    <button type="button" class="carousel-prev btn btn-circle bg-white/50 hover:bg-white/75 absolute left-2 top-1/2" data-post="<%= post.id %>">❮</button>
+                    <button type="button" class="carousel-next btn btn-circle bg-white/50 hover:bg-white/75 absolute right-2 top-1/2" data-post="<%= post.id %>">❯</button>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-xl font-semibold text-gray-900"><%= post.caption %></h2>
+                  <span class="text-sm text-gray-500">
+                    <%= time_ago_in_words(post.created_at) %> ago
+                  </span>
+                </div>
+                
+                <p class="text-gray-600 mb-4"><%= post.body %></p>
+                
+                <div class="flex justify-end">
+                  <button class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md">
+                    Like Post
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-gray-600 mb-4">No posts yet.</p>
+          <%= link_to "Create Your First Post", new_post_path, 
+              class: "bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
