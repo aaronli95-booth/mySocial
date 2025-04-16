@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  # Profile routes
   resource :profile, only: [:show, :edit, :update]
+  get 'profiles/:id', to: 'profiles#show', as: :user_profile
+  
   resources :posts
   resource :registrations, only: [:new, :create]
   resource :session
   resources :passwords, param: :token
+  # Search route
+  get 'search', to: 'search#index', as: :search
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

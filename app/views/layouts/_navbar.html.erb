@@ -42,6 +42,21 @@
       </li>
       <li><a>Friends</a></li>
     </ul>
+    
+    <% if authenticated? %>
+      <%= form_tag search_path, method: :get, class: "ml-4 relative" do %>
+        <div class="relative">
+          <%= text_field_tag :query, params[:query], 
+              class: "w-64 px-4 py-2 rounded-full bg-white/90 border-0 focus:ring-2 focus:ring-orange-500 placeholder-gray-500 text-gray-900",
+              placeholder: "Search users..." %>
+          <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="navbar-end">
