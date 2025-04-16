@@ -5,14 +5,14 @@
     <h1 class="text-3xl font-bold text-gray-900 mb-2">View All Posts</h1>
     <%= link_to "Create New Post", new_post_path, class: "bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md mb-8 inline-block" %>
 
-    <div class="space-y-6 mt-4">
+    <div class="space-y-6 mt-4 w-[500px]">
       <% @posts.each do |post| %>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <% if post.images.any? %>
             <div class="relative" id="carousel-<%= post.id %>">
-              <div class="carousel-images flex justify-center">
+              <div class="carousel-images flex flex-shrink justify-center">
                 <% post.images.each_with_index do |image, index| %>
-                  <%= image_tag image, class: "carousel-img w-[320px] h-[320px] object-contain mx-auto", data: { index: index }, style: (index == 0 ? "" : "display:none;") %>
+                  <%= image_tag image, class: "carousel-img w-[500px] object-contain", data: { index: index }, style: (index == 0 ? "" : "display:none;") %>
                 <% end %>
               </div>
               <% if post.images.size > 1 %>
