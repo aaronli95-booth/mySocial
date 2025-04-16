@@ -12,7 +12,7 @@
             <div class="relative" id="carousel-<%= post.id %>">
               <div class="carousel-images flex justify-center">
                 <% post.images.each_with_index do |image, index| %>
-                  <%= image_tag image, class: "carousel-img w-[320px] h-[320px] object-contain bg-gray-100 mx-auto", data: { index: index }, style: (index == 0 ? "" : "display:none;") %>
+                  <%= image_tag image, class: "carousel-img w-[320px] h-[320px] object-contain mx-auto", data: { index: index }, style: (index == 0 ? "" : "display:none;") %>
                 <% end %>
               </div>
               <% if post.images.size > 1 %>

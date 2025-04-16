@@ -16,6 +16,13 @@ class RegistrationsController < ApplicationController
 private
 
   def user_params
-    params.expect(user: [:email_address, :password])
+    params.require(:user).permit(
+      :email_address, 
+      :password,
+      :first_name,
+      :last_name,
+      :school,
+      :bio
+    )
   end
 end
