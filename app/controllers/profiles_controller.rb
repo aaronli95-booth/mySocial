@@ -1,34 +1,21 @@
 class ProfilesController < ApplicationController
-  before_action :require_authentication
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :edit, :update]
 
   def show
-    Rails.logger.debug "Show action - params: #{params.inspect}"
-    Rails.logger.debug "Show action - @user: #{@user.inspect}"
-    # @user is already set by set_user
-    if @user.nil?
-      redirect_to root_path, alert: "User not found"
-    end
+    @posts = @user.posts.order(created_at: :desc)
   end
 
   def edit
-    @user = Current.user
   end
 
   def update
-    @user = Current.user
-    
     if params[:user][:avatar].present?
-      Rails.logger.debug "Avatar file received: #{params[:user][:avatar].original_filename}"
+      @user.avatar.attach(params[:user][:avatar])
     end
 
-    if @user.update(user_params)
-      if @user.avatar.attached?
-        Rails.logger.debug "Avatar successfully attached"
-      end
-      redirect_to profile_path, notice: "Profile updated successfully"
+    if @user.update(user_params.except(:avatar))
+      redirect_to profile_path, notice: 'Profile was successfully updated.'
     else
-      Rails.logger.debug "Profile update failed: #{@user.errors.full_messages}"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -36,23 +23,10 @@ class ProfilesController < ApplicationController
   private
 
   def set_user
-    Rails.logger.debug "set_user - params: #{params.inspect}"
-    if params[:id].present?
-      @user = User.find_by(id: params[:id])
-      Rails.logger.debug "set_user - found user: #{@user.inspect}"
-    else
-      @user = Current.user
-      Rails.logger.debug "set_user - using current user: #{@user.inspect}"
-    end
+    @user = params[:id].present? ? User.find(params[:id]) : Current.user
   end
 
   def user_params
-    params.require(:user).permit(
-      :first_name,
-      :last_name,
-      :school,
-      :bio,
-      :avatar
-    )
+    params.require(:user).permit(:first_name, :last_name, :school, :bio, :avatar)
   end
 end

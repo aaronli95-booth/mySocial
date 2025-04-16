@@ -14,15 +14,17 @@
       <!-- Avatar Upload Section -->
       <div class="flex flex-col items-center space-y-4">
         <div class="w-32 h-32 relative group">
-          <% if @user.avatar.attached? %>
-            <%= image_tag @user.avatar, class: "w-full h-full object-cover rounded-full" %>
-          <% else %>
-            <div class="w-full h-full bg-orange-200 flex items-center justify-center rounded-full">
-              <span class="text-orange-500 text-4xl">
-                <%= @user.first_name&.first&.upcase %><%= @user.last_name&.first&.upcase %>
-              </span>
-            </div>
-          <% end %>
+          <div id="avatar-preview" class="w-full h-full">
+            <% if @user.avatar.attached? %>
+              <%= image_tag @user.avatar, class: "w-full h-full object-cover rounded-full" %>
+            <% else %>
+              <div class="w-full h-full bg-orange-200 flex items-center justify-center rounded-full">
+                <span class="text-orange-500 text-4xl">
+                  <%= @user.first_name&.first&.upcase %><%= @user.last_name&.first&.upcase %>
+                </span>
+              </div>
+            <% end %>
+          </div>
           
           <label for="user_avatar" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition duration-200">
             <span>Change Photo</span>
@@ -32,7 +34,7 @@
               class: "hidden",
               accept: 'image/png,image/jpeg,image/jpg',
               data: {
-                action: "change->form#submit"
+                action: "change->form#previewAvatar"
               } %>
         </div>
         <p class="text-sm text-gray-500">Click to upload a new photo</p>
@@ -79,3 +81,23 @@
     <% end %>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  document.addEventListener("turbo:load", function() {
+    const avatarInput = document.querySelector("#user_avatar");
+    const avatarPreview = document.querySelector("#avatar-preview");
+
+    if (avatarInput) {
+      avatarInput.addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            avatarPreview.innerHTML = `<img src="${e.target.result}" class="w-32 h-32 object-cover rounded-full" />`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+<% end %>

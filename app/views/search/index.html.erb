@@ -18,7 +18,7 @@
       <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="divide-y divide-gray-200">
           <% @users.each do |user| %>
-            <%= link_to user_profile_path(id: user.id), class: "block hover:bg-gray-50 transition duration-150 ease-in-out", data: { turbo: false } do %>
+            <%= link_to (user == Current.user ? profile_path : user_profile_path(id: user.id)), class: "block hover:bg-gray-50 transition duration-150 ease-in-out", data: { turbo: false } do %>
               <div class="p-4">
                 <div class="flex items-center space-x-4">
                   <div class="flex-shrink-0">
