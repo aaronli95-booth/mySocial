@@ -22,10 +22,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="flex <%= @classes_for_body %>">
+  <body class="bg-white min-h-screen flex <%= @classes_for_body %>">
     <%= render "layouts/navbar" %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.carousel-prev, .carousel-next').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var postId = btn.getAttribute('data-post');
+          var carousel = document.getElementById('carousel-' + postId);
+          var images = carousel.querySelectorAll('.carousel-img');
+          var current = Array.from(images).findIndex(img => img.style.display !== 'none');
+          images[current].style.display = 'none';
+          var next;
+          if (btn.classList.contains('carousel-prev')) {
+            next = (current - 1 + images.length) % images.length;
+          } else {
+            next = (current + 1) % images.length;
+          }
+          images[next].style.display = '';
+        });
+      });
+    });
+    </script>
   </body>
 </html>

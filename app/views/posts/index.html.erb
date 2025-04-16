@@ -1,33 +1,43 @@
-<% content_for :title, "Posts" %>
+<% content_for :title, "View All Posts" %>
 
-<div class="w-full">
-  <h1 class="font-bold text-4xl">View All Posts</h1>
+<div class="min-h-screen bg-white flex flex-col py-8">
+  <div class="w-full max-w-4xl px-4 ml-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">View All Posts</h1>
+    <%= link_to "Create New Post", new_post_path, class: "bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md mb-8 inline-block" %>
 
-  <div class="w-full flex flex-col items-center gap-8 mt-8"> 
-    <% @posts.each do |post| %>
-      <div class="card bg-base-100 w-96 shadow-sm">
-        <figure>
-          <div class="carousel w-full">
-            <% post.images.each.with_index do |image, index| %> 
-              <div id="slide<%= index %>" class="carousel-item relative w-full">
-                <%= image_tag(image, class: "h-56 w-full object-cover") if post.images.any? %>
-                <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                  <a href="#slide<%= index - 1 %>" class="btn btn-circle">❮</a>
-                  <a href="#slide<%= index + 1 %>" class="btn btn-circle">❯</a>
-                </div>
+    <div class="space-y-6 mt-4">
+      <% @posts.each do |post| %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <% if post.images.any? %>
+            <div class="relative" id="carousel-<%= post.id %>">
+              <div class="carousel-images flex justify-center">
+                <% post.images.each_with_index do |image, index| %>
+                  <%= image_tag image, class: "carousel-img w-[320px] h-[320px] object-contain bg-gray-100 mx-auto", data: { index: index }, style: (index == 0 ? "" : "display:none;") %>
+                <% end %>
               </div>
-            <% end %>
-          </div>
-        </figure>
-        <div class="card-body">
-          <h2 class="card-title"><%= post.caption %></h2>
-          <p><%= post.body.first(100) %></p>
-          <p>by <%= post.user.email_address %></p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary">Like Post</button>
+              <% if post.images.size > 1 %>
+                <button type="button" class="carousel-prev btn btn-circle bg-white/50 hover:bg-white/75 absolute left-2 top-1/2" data-post="<%= post.id %>">❮</button>
+                <button type="button" class="carousel-next btn btn-circle bg-white/50 hover:bg-white/75 absolute right-2 top-1/2" data-post="<%= post.id %>">❯</button>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-semibold text-gray-900"><%= post.caption %></h2>
+              <span class="text-sm text-gray-500">by <%= post.user.email_address %></span>
+            </div>
+            
+            <p class="text-gray-600 mb-4"><%= post.body %></p>
+            
+            <div class="flex justify-end">
+              <button class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md">
+                Like Post
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
