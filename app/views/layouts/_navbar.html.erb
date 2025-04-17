@@ -15,7 +15,7 @@
             <li><a>Submenu 2</a></li>
           </ul>
         </li>
-        <li><a>Item 3</a></li>
+        <li><%= link_to "Friends", friendships_path %></li>
       </ul>
     </div>
     
@@ -40,7 +40,7 @@
           </ul>
         </details>
       </li>
-      <li><a>Friends</a></li>
+      <li><%= link_to "Friends", friendships_path %></li>
     </ul>
     
     <% if authenticated? %>

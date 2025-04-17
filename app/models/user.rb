@@ -5,9 +5,9 @@ class User < ApplicationRecord
   
   # Friendship associations
   has_many :friendships, dependent: :destroy
-  has_many :friends, through: :friendships, source: :friend
-  has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
-  has_many :inverse_friends, through: :inverse_friendships, source: :user
+  has_many :friends, -> { where(friendships: { status: 'accepted' }) }, through: :friendships, source: :friend
+  has_many :inverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
+  has_many :inverse_friends, -> { where(friendships: { status: 'accepted' }) }, through: :inverse_friendships, source: :user
   
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100]

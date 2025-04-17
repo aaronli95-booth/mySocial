@@ -1,5 +1,14 @@
 class FriendshipsController < ApplicationController
-  before_action :set_friend
+  before_action :set_friend, except: [:index]
+
+  def index
+    puts "Current user: #{Current.user.inspect}"
+    @friends = (Current.user.friends + Current.user.inverse_friends).uniq
+    puts "Friends count: #{@friends.count}"
+    puts "Friends: #{@friends.inspect}"
+    @pending_requests = Current.user.inverse_friendships.where(status: 'pending')
+    puts "Pending requests count: #{@pending_requests.count}"
+  end
 
   def create
     @friendship = Current.user.friendships.build(friend: @friend, status: 'pending')
