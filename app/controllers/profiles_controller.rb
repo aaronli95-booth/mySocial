@@ -23,7 +23,13 @@ class ProfilesController < ApplicationController
   private
 
   def set_user
-    @user = params[:id].present? ? User.find(params[:id]) : Current.user
+    if params[:id].present?
+      # For viewing other users' profiles
+      @user = User.find_by(id: params[:id])
+    else
+      # For current user's profile
+      @user = Current.user
+    end
   end
 
   def user_params

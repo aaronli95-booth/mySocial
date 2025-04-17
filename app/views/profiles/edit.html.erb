@@ -93,7 +93,7 @@
         if (file) {
           const reader = new FileReader();
           reader.onload = function(e) {
-            avatarPreview.innerHTML = `<img src="${e.target.result}" class="w-32 h-32 object-cover rounded-full" />`;
+            avatarPreview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-full" />`;
           };
           reader.readAsDataURL(file);
         }

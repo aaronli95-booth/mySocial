@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   resource :profile, only: [:show, :edit, :update]
   get 'profiles/:id', to: 'profiles#show', as: :user_profile
   
+  # Friendship routes
+  resources :friendships, only: [:create, :update, :destroy]
+  post 'friendships/:id/accept', to: 'friendships#accept', as: :accept_friendship
+  post 'friendships/:id/reject', to: 'friendships#reject', as: :reject_friendship
+  
   resources :posts
   resource :registrations, only: [:new, :create]
   resource :session

@@ -16,7 +16,6 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    flash.clear
-    redirect_to root_path, notice: "Signed out successfully"
+    redirect_to root_path
   end
 end

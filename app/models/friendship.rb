@@ -1,12 +1,17 @@
-# db/migrate/XXXX_create_friendships.rb
-class CreateFriendships < ActiveRecord::Migration[7.1]
-  def change
-    create_table :friendships do |t|
-      t.references :user, null: false, foreign_key: true
-      t.references :friend, null: false, foreign_key: { to_table: :users }
-      t.boolean :confirmed, default: false
-      t.timestamps
+class Friendship < ApplicationRecord
+  belongs_to :user
+  belongs_to :friend, class_name: 'User'
+
+  validates :user_id, uniqueness: { scope: :friend_id }
+  validates :status, inclusion: { in: %w[pending accepted] }
+
+  validate :not_self_friendship
+
+  private
+
+  def not_self_friendship
+    if user_id == friend_id
+      errors.add(:friend, "can't be the same as the user")
     end
-    add_index :friendships, [:user_id, :friend_id], unique: true
   end
 end
