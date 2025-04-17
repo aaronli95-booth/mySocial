@@ -83,6 +83,45 @@
             <% end %>
           </div>
         </div>
+
+        <!-- Friends Section -->
+        <div class="w-64 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <%= link_to @user == Current.user ? friendships_path : friendships_path(user_id: @user.id), class: "block" do %>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-semibold text-gray-800">Friends</h3>
+              <span class="text-gray-500"><%= (@user.friends + @user.inverse_friends).uniq.count %></span>
+            </div>
+          <% end %>
+          <div class="grid grid-cols-5 gap-2">
+            <% (@user.friends + @user.inverse_friends).uniq.first(5).each do |friend| %>
+              <div class="w-10 h-10 group relative">
+                <%= link_to profile_path(id: friend.id), class: "absolute inset-0" do %>
+                  <% if friend.avatar.attached? %>
+                    <%= image_tag friend.avatar, class: "w-full h-full object-cover rounded-full hover:opacity-80 transition duration-300" %>
+                  <% else %>
+                    <div class="w-full h-full bg-orange-200 flex items-center justify-center rounded-full">
+                      <span class="text-orange-500 text-sm">
+                        <%= friend.first_name&.first&.upcase %><%= friend.last_name&.first&.upcase %>
+                      </span>
+                    </div>
+                  <% end %>
+                <% end %>
+                <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                  <%= friend.first_name %> <%= friend.last_name %>
+                </div>
+              </div>
+            <% end %>
+            <% if (@user.friends + @user.inverse_friends).uniq.count > 5 %>
+              <div class="w-10 h-10 relative">
+                <%= link_to @user == Current.user ? friendships_path : friendships_path(user_id: @user.id), class: "absolute inset-0" do %>
+                  <div class="w-full h-full bg-gray-100 rounded-full flex items-center justify-center">
+                    <span class="text-gray-500 text-sm">+<%= (@user.friends + @user.inverse_friends).uniq.count - 5 %></span>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
 
       <!-- Posts Section -->

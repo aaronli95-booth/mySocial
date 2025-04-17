@@ -2,12 +2,15 @@ class FriendshipsController < ApplicationController
   before_action :set_friend, except: [:index]
 
   def index
-    puts "Current user: #{Current.user.inspect}"
-    @friends = (Current.user.friends + Current.user.inverse_friends).uniq
-    puts "Friends count: #{@friends.count}"
-    puts "Friends: #{@friends.inspect}"
-    @pending_requests = Current.user.inverse_friendships.where(status: 'pending')
-    puts "Pending requests count: #{@pending_requests.count}"
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @friends = (@user.friends + @user.inverse_friends).uniq
+      @pending_requests = @user.inverse_friendships.where(status: 'pending')
+    else
+      @user = Current.user
+      @friends = (Current.user.friends + Current.user.inverse_friends).uniq
+      @pending_requests = Current.user.inverse_friendships.where(status: 'pending')
+    end
   end
 
   def create
