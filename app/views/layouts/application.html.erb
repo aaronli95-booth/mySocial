@@ -28,7 +28,14 @@
       <%= yield %>
     </main>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
+
+    function initCarouselButtons() {
+      document.querySelectorAll('.carousel-prev, .carousel-next').forEach(function(btn) {
+        // First remove any existing handlers
+        btn.replaceWith(btn.cloneNode(true));
+      });
+      
+      // Now add fresh handlers
       document.querySelectorAll('.carousel-prev, .carousel-next').forEach(function(btn) {
         btn.addEventListener('click', function() {
           var postId = btn.getAttribute('data-post');
@@ -45,7 +52,12 @@
           images[next].style.display = '';
         });
       });
-    });
+    }
+
+    // Run on initial page load
+    document.addEventListener("DOMContentLoaded", initCarouselButtons);
+    // Run after Turbo updates are complete
+    document.addEventListener("turbo:load", initCarouselButtons);
     </script>
   </body>
 </html>

@@ -139,9 +139,29 @@
               <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <% if post.images.any? %>
                   <div class="relative" id="carousel-<%= post.id %>">
-                    <% if @user == Current.user %>
-                      <div class="dropdown dropdown-end absolute top-2 right-2 z-1">
-                        <button tabindex="0" class="btn btn-sm btn-circle bg-black/50 hover:bg-black/70 border-0">
+                    <div class="carousel-images flex flex-shrink justify-center">
+                      <% post.images.each_with_index do |image, index| %>
+                        <%= image_tag image, class: "carousel-img w-[500px] object-contain", 
+                            data: { index: index }, 
+                            style: (index == 0 ? "" : "display:none;") %>
+                      <% end %>
+                    </div>
+                    <% if post.images.size > 1 %>
+                      <button type="button" class="carousel-prev btn btn-circle bg-white/50 hover:bg-white/75 absolute left-2 top-1/2" data-post="<%= post.id %>">❮</button>
+                      <button type="button" class="carousel-next btn btn-circle bg-white/50 hover:bg-white/75 absolute right-2 top-1/2" data-post="<%= post.id %>">❯</button>
+                    <% end %>
+                  </div>
+                <% end %>
+                <div class="pl-6 py-6 pr-4">
+                  <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900 max-w-[60%]"><%= post.caption %></h2>
+                    <div class="flex space-x-2">
+                      <span class="text-sm text-gray-500 mt-1">
+                        <%= time_ago_in_words(post.created_at) %> ago
+                      </span>
+                      <% if @user == Current.user %>
+                      <div class="dropdown dropdown-end z-1">
+                        <button tabindex="0" class="btn btn-sm btn-circle bg-black/20 hover:bg-black/70 border-0">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                           </svg>
@@ -166,27 +186,6 @@
                         </ul>
                       </div>
                     <% end %>
-                    <div class="carousel-images flex flex-shrink justify-center">
-                      <% post.images.each_with_index do |image, index| %>
-                        <%= image_tag image, class: "carousel-img w-[500px] object-contain", 
-                            data: { index: index }, 
-                            style: (index == 0 ? "" : "display:none;") %>
-                      <% end %>
-                    </div>
-                    <% if post.images.size > 1 %>
-                      <button type="button" class="carousel-prev btn btn-circle bg-white/50 hover:bg-white/75 absolute left-2 top-1/2" data-post="<%= post.id %>">❮</button>
-                      <button type="button" class="carousel-next btn btn-circle bg-white/50 hover:bg-white/75 absolute right-2 top-1/2" data-post="<%= post.id %>">❯</button>
-                    <% end %>
-                  </div>
-                <% end %>
-
-                <div class="p-6">
-                  <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold text-gray-900"><%= post.caption %></h2>
-                    <div class="flex items-center space-x-2">
-                      <span class="text-sm text-gray-500">
-                        <%= time_ago_in_words(post.created_at) %> ago
-                      </span>
                     </div>
                   </div>
                   

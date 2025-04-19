@@ -1,4 +1,4 @@
-<%= form_with(model: post, class: "contents") do |form| %>
+<%= form_with(model: post, class: "contents", multipart: true) do |form| %>
   <% if post.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
       <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -44,6 +44,7 @@
         <% post.images.each do |image| %>
           <div class="relative group">
             <%= image_tag image, class: "w-full h-32 object-cover rounded-lg" %>
+            # <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
           </div>
         <% end %>
       <% end %>

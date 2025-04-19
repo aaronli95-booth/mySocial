@@ -27,6 +27,15 @@ class PostsController < ApplicationController
     @post = Current.user.posts.new(post_params)
 
     if @post.save
+      # Notify all friends about the new post
+      (Current.user.friends + Current.user.inverse_friends).uniq.each do |friend|
+        NotificationService.notify(
+          recipient: friend,
+          actor: Current.user,
+          action_type: 'new_post',
+          notifiable: @post
+        )
+      end
       redirect_to profile_path, notice: "Post was successfully created."
     else
       render :new, status: :unprocessable_entity

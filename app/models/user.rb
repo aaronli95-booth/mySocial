@@ -42,6 +42,10 @@ class User < ApplicationRecord
     inverse_friendships.exists?(user: user, status: 'pending')
   end
 
+  # Notification associations
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :created_notifications, class_name: 'Notification', foreign_key: :actor_id, dependent: :destroy
+
   private
 
   def validate_avatar

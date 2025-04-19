@@ -34,4 +34,14 @@ Rails.application.routes.draw do
   # Friends
   get 'friends', to: 'friendships#index', as: :friends
 
+  # Notifications
+  resources :notifications, only: [:index] do
+    member do
+      post :mark_as_read
+    end
+    collection do
+      post :mark_all_as_read
+    end
+  end
+
 end

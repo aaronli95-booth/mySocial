@@ -17,6 +17,12 @@ class FriendshipsController < ApplicationController
     @friendship = Current.user.friendships.build(friend: @friend, status: 'pending')
 
     if @friendship.save
+      NotificationService.notify(
+        recipient: @friend,
+        actor: Current.user,
+        action_type: 'friend_request',
+        notifiable: @friendship
+      )
       redirect_to user_profile_path(@friend), notice: "Friend request sent."
     else
       redirect_to user_profile_path(@friend), alert: "Could not send friend request."
@@ -27,6 +33,12 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find_by(user: @friend, friend: Current.user, status: 'pending')
     
     if @friendship&.update(status: 'accepted')
+      NotificationService.notify(
+        recipient: @friend,
+        actor: Current.user,
+        action_type: 'friend_request_accepted',
+        notifiable: @friendship
+      )
       redirect_to user_profile_path(@friend), notice: "Friend request accepted."
     else
       redirect_to user_profile_path(@friend), alert: "Could not accept friend request."
@@ -37,13 +49,27 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find_by(user: @friend, friend: Current.user) ||
                  Friendship.find_by(user: Current.user, friend: @friend)
     
-    if @friendship&.destroy
+    if @friendship
+      was_pending = @friendship.status == 'pending'
+      recipient = (@friendship.user == Current.user) ? @friendship.friend : @friendship.user
+  
+      @friendship.destroy
+  
+      if was_pending
+        NotificationService.notify(
+          recipient: recipient,
+          actor: Current.user,
+          action_type: 'friend_request_rejected',
+          notifiable: @friendship
+        )
+      end
+      
       redirect_to user_profile_path(@friend), notice: "Friend request removed."
     else
       redirect_to user_profile_path(@friend), alert: "Could not remove friend request."
     end
   end
-
+                
   private
 
   def set_friend
