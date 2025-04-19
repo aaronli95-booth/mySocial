@@ -24,7 +24,20 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-4">
               <h2 class="text-xl font-semibold text-gray-900"><%= post.caption %></h2>
-              <span class="text-sm text-gray-500">by <%= post.user.first_name %> <%= post.user.last_name %></span>
+              <%= link_to user_profile_path(post.user), class: "flex items-center group hover:text-orange-600" do %>
+                <% if post.user.avatar.attached? %>
+                  <%= image_tag post.user.avatar, class: "h-8 w-8 rounded-full mr-2 object-cover" %>
+                <% else %>
+                  <div class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center mr-2">
+                    <span class="text-sm font-medium text-white">
+                      <%= post.user.first_name.first %><%= post.user.last_name.first %>
+                    </span>
+                  </div>
+                <% end %>
+                <span class="text-sm text-gray-500 group-hover:text-orange-600">
+                  <%= post.user.first_name %>
+                </span>
+              <% end %>
             </div>
             <p class="text-gray-600 mb-4"><%= post.body %></p>
             <div class="flex justify-end">
