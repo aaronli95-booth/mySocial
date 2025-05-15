@@ -1,0 +1,20 @@
+<%= link_to user_profile_path(notification.actor), class: "block hover:bg-gray-50" do %>
+  <div class="flex items-center">
+    <% if notification.actor.avatar.attached? %>
+      <%= image_tag notification.actor.avatar, class: "h-10 w-10 rounded-full mr-3 object-cover" %>
+    <% else %>
+      <div class="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center mr-3">
+        <span class="text-sm font-medium text-white">
+          <%= notification.actor.first_name.first %><%= notification.actor.last_name.first %>
+        </span>
+      </div>
+    <% end %>
+    <div class="flex-1">
+      <p class="text-sm text-gray-800">
+        <span class="font-semibold"><%= notification.actor.first_name %> <%= notification.actor.last_name %></span>
+        rejected your friend request
+      </p>
+      <p class="text-xs text-gray-500 mt-1">You cannot view their profile at this time.</p>
+    </div>
+  </div>
+<% end %> 
