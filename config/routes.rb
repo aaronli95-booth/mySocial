@@ -13,8 +13,11 @@ Rails.application.routes.draw do
     post 'reject', on: :member
   end
   
-  # Posts
-  resources :posts
+  # Posts and likes
+  resources :posts do
+    post :toggle_like, on: :member
+  end
+  
 
   # User Registration (Sign up)
   resource :registrations, only: [:new, :create]
@@ -43,5 +46,6 @@ Rails.application.routes.draw do
       post :mark_all_as_read
     end
   end
+
 
 end
